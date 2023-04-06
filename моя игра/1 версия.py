@@ -15,6 +15,10 @@ pygame.display.set_caption("Моя игра")
 FPS = 60
 clock = pygame.time.Clock()
 
+#платформы 
+
+platform = pygame.image.load('block0.png') 
+
 maps =  [
     '***************************************',
     '*                                     *',
@@ -46,8 +50,28 @@ while 1:
         if event.type == pygame.QUIT:
             sys.exit()
 
+    
+    #генерация платформ
+
+    platforms = []
+
+    for i in range(len(maps)):
+        for j in range(len(maps[i])):
+            if maps[i][j] == '*':
+                platformrect = platform.get_rect()
+                platformrect.x = 50 * j
+                platformrect.y = 50 * i
+                platforms.append(platformrect)
+                mainScreen.blit(platform, platformrect)       
+
     # заливаем главный фон черным цветом
     mainScreen.fill(mainScreenColor)
+
+    
+    #рисовка плаформ 
+    
+    for platformrect in platforms:
+        mainScreen.blit(platform, platformrect)
 
     pygame.display.flip()
     clock.tick(FPS)
