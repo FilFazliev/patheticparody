@@ -128,5 +128,6 @@ while 1:
         mainScreen.blit(platform, platformrect)
 
 
+
     pygame.display.flip()
     clock.tick(FPS)
