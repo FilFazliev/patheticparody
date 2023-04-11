@@ -36,6 +36,10 @@ herorect = hero.get_rect()
 herorect.bottom = HEIGHT-150
 herorect.left = WIDTH-1600
 
+SPEED = 10
+changeX = 0
+changeY = 0
+
 maps =  [
     '***************************************',
     '*                                     *',
@@ -66,7 +70,6 @@ while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-
     herorect_old = herorect.copy()
 
 
@@ -96,8 +99,7 @@ while 1:
 
     if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
         changeX = 0
-
-
+    
     #генерация платформ
 
     platforms = []
@@ -109,12 +111,14 @@ while 1:
                 platformrect.x = 50 * j
                 platformrect.y = 50 * i
                 platforms.append(platformrect)
-                mainScreen.blit(platform, platformrect)       
+                mainScreen.blit(platform, platformrect) 
+                
+    #провера столкновения 
+    for platformrect in platforms:
+        if herorect.colliderect(platformrect) == True:
+            if herorect.left < herorect_old.left:
+                herorect.x -= changeX
 
-    # границы
-
-    
-    
 
     # заливаем главный фон черным цветом
     mainScreen.fill(mainScreenColor)
