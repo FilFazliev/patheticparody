@@ -16,9 +16,29 @@ pygame.display.set_caption("Моя игра")
 FPS = 60
 clock = pygame.time.Clock()
 
+SPEED = 60
+changeX = 0
+changeY = 0
+
+
 #платформы 
 
-platform = pygame.image.load('моя игра/block0.png') 
+platform = pygame.image.load('block0.png') 
+
+#персонаж
+
+herostand = pygame.image.load('pers3.png')
+heror = pygame.image.load('pers.png')
+heromover = pygame.image.load('pers2.png')
+
+hero = herostand
+herorect = hero.get_rect()
+herorect.bottom = HEIGHT-150
+herorect.left = WIDTH-1600
+
+SPEED = 10
+changeX = 0
+changeY = 0
 
 maps =  [
     '***************************************',
@@ -54,7 +74,35 @@ while 1:
             sys.exit()
         if keys[pygame.K_ESCAPE]:
             sys.exit()
+    herorect_old = herorect.copy()
 
+
+    platforms = []
+
+    #движение
+    keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_LEFT]:
+        changeX = -1 * SPEED
+        
+
+    if keys[pygame.K_RIGHT]:
+        changeX = SPEED
+        
+
+    if keys[pygame.K_UP]:
+        changeY = -1 * SPEED
+        
+
+    if keys[pygame.K_DOWN]:
+        changeY = SPEED
+        
+
+    if not keys[pygame.K_DOWN] and not keys[pygame.K_UP]:
+        changeY = 0
+
+    if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
+        changeX = 0
     
     #генерация платформ
 
@@ -67,10 +115,20 @@ while 1:
                 platformrect.x = 50 * j
                 platformrect.y = 50 * i
                 platforms.append(platformrect)
-                mainScreen.blit(platform, platformrect)       
+                mainScreen.blit(platform, platformrect) 
+                
+    #провера столкновения 
+    for platformrect in platforms:
+        if herorect.colliderect(platformrect) == True:
+            if herorect.left < herorect_old.left:
+                herorect.x -= changeX
+
 
     # заливаем главный фон черным цветом
     mainScreen.fill(mainScreenColor)
+
+    herorect.x += changeX
+    herorect.y += changeY
 
     
     #рисовка плаформ 
@@ -78,6 +136,7 @@ while 1:
     for platformrect in platforms:
         mainScreen.blit(platform, platformrect)
 
-    mainScreen.blit(hero, herorectS)
+    mainScreen.blit(hero,herorect)
+
     pygame.display.flip()
     clock.tick(FPS)
