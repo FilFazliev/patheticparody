@@ -16,7 +16,7 @@ pygame.display.set_caption("Моя игра")
 FPS = 60
 clock = pygame.time.Clock()
 
-SPEED = 10
+SPEED = 60
 changeX = 0
 changeY = 0
 
@@ -27,13 +27,14 @@ platform = pygame.image.load('block0.png')
 
 #персонаж
 
-herostand = pygame.image.load('')
-heror = pygame.image.load('')
+herostand = pygame.image.load('pers3.png')
+heror = pygame.image.load('pers.png')
+heromover = pygame.image.load('pers2.png')
 
 hero = herostand
-herorect = heror.get_rect()
+herorect = hero.get_rect()
 herorect.bottom = HEIGHT-150
-herorect.left = WIDTH-1000
+herorect.left = WIDTH-1600
 
 maps =  [
     '***************************************',
@@ -110,16 +111,16 @@ while 1:
                 platforms.append(platformrect)
                 mainScreen.blit(platform, platformrect)       
 
-    #провера столкновения 
-    for platformrect in platforms:
-        if herorect.colliderect(platformrect) == True:
-            if herorect.left < herorect_old.left:
-                herorect.x -= changeX
+    # границы
 
-
+    
+    
 
     # заливаем главный фон черным цветом
     mainScreen.fill(mainScreenColor)
+
+    herorect.x += changeX
+    herorect.y += changeY
 
     
     #рисовка плаформ 
@@ -127,7 +128,7 @@ while 1:
     for platformrect in platforms:
         mainScreen.blit(platform, platformrect)
 
-
+    mainScreen.blit(hero,herorect)
 
     pygame.display.flip()
     clock.tick(FPS)
