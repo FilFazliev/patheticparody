@@ -3,12 +3,13 @@ pygame.init()
 
 # цвета
 BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
 
 # настройки главного экрана
 WIDTH = 1920
 HEIGHT = 1080
-mainScreen = pygame.display.set_mode((WIDTH, HEIGHT))
-mainScreenColor = BLACK
+mainScreen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+mainScreenColor = WHITE
 pygame.display.set_caption("Моя игра")
 
 # число кадров в секунду
@@ -17,7 +18,7 @@ clock = pygame.time.Clock()
 
 #платформы 
 
-platform = pygame.image.load('block0.png') 
+platform = pygame.image.load('моя игра/block0.png') 
 
 maps =  [
     '***************************************',
@@ -26,19 +27,21 @@ maps =  [
     '*                                     *',
     '*                                     *',
     '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '***********************************   *',
-    '*                                     *',
-    '*                                     *',
+    '****** *                              *',
+    '*      *                              *',
+    '*    * ********                       *',
+    '*    *        *                       *',
+    '*    * ****** *                       *',
+    '****** *                              *',
+    '*      *                              *',
+    '** *** *                              *',
+    '*    * ********                       *',
+    '*    *        *                       *',
+    '*    * ****** *                       *',
+    '*    * *    * *   ******* *******     *',
+    '*    * *    * *****     * *     * * ***',
+    '****** *    *       *** *** *** *** * *',
+    '*      *    * ******* *     * *     * *',
     '***************************************',
 ]
 
@@ -48,6 +51,8 @@ while 1:
     # проверяем события, которые произошли (если они были)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            sys.exit()
+        if keys[pygame.K_ESCAPE]:
             sys.exit()
 
     
@@ -73,5 +78,6 @@ while 1:
     for platformrect in platforms:
         mainScreen.blit(platform, platformrect)
 
+    mainScreen.blit(hero, herorectS)
     pygame.display.flip()
     clock.tick(FPS)
