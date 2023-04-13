@@ -1,6 +1,6 @@
 import pygame, sys
 pygame.init()
-
+from os import path
 # цвета
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -23,13 +23,13 @@ changeY = 0
 
 #платформы 
 
-platform = pygame.image.load('block0.png') 
+platform = pygame.image.load('моя игра/block0.png') 
 
 #персонаж
 
-herostand = pygame.image.load('pers3.png')
-heror = pygame.image.load('pers.png')
-heromover = pygame.image.load('pers2.png')
+herostand = pygame.image.load('моя игра/pers3.png')
+heror = pygame.image.load('моя игра/pers.png')
+heromover = pygame.image.load('моя игра/pers2.png')
 
 hero = herostand
 herorect = hero.get_rect()
@@ -42,26 +42,26 @@ changeY = 0
 
 maps =  [
     '***************************************',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '****** *                              *',
-    '*      *                              *',
-    '*    * ********                       *',
-    '*    *        *                       *',
-    '*    * ****** *                       *',
-    '****** *                              *',
-    '*      *                              *',
-    '** *** *                              *',
-    '*    * ********                       *',
-    '*    *        *                       *',
-    '*    * ****** *                       *',
-    '*    * *    * *   ******* *******     *',
-    '*    * *    * *****     * *     * * ***',
+    '*                        *     *       ',
+    '*             *          *          ***',
+    '****          ***        *****      * *',
+    '*               *                   * *',
+    '*               *              *    * *',
+    '****** *     ******      *     *    * *',
+    '*      *                **     *    * *',
+    '*    * ********                     * *',
+    '*    *        *  ******************** *',
+    '*    * ****** *  *                  * *',
+    '****** *    * *  * **************** * *',
+    '*      * **** *  * *              * * *',
+    '** *** *      *  * * ************ * * *',
+    '**   * ********  * *            * * * *',
+    '*    *        *  * ************** * * *',
+    '*    * ****** *  *                * * *',
+    '*    * *    * *  ****************** * *',
+    '*    * *    * *****     * *     * * * *',
     '****** *    *       *** *** *** *** * *',
-    '*      *    * ******* *     * *     * *',
+    '*      *    ********* *     * *     * *',
     '***************************************',
 ]
 
@@ -69,6 +69,8 @@ maps =  [
 
 while 1:
     # проверяем события, которые произошли (если они были)
+    keys = pygame.key.get_pressed()
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
@@ -76,11 +78,10 @@ while 1:
             sys.exit()
     herorect_old = herorect.copy()
 
-
     platforms = []
 
     #движение
-    keys = pygame.key.get_pressed()
+    
 
     if keys[pygame.K_LEFT]:
         changeX = -1 * SPEED
@@ -117,19 +118,34 @@ while 1:
                 platforms.append(platformrect)
                 mainScreen.blit(platform, platformrect) 
                 
-    #провера столкновения 
-    for platformrect in platforms:
-        if herorect.colliderect(platformrect) == True:
-            if herorect.left < herorect_old.left:
-                herorect.x -= changeX
-
-
-    # заливаем главный фон черным цветом
-    mainScreen.fill(mainScreenColor)
 
     herorect.x += changeX
     herorect.y += changeY
 
+    #провера столкновения 
+    for platformrect in platforms:
+        if herorect.colliderect(platformrect) == True:
+            # движемся налево
+            if herorect.left < herorect_old.left:
+                herorect.x -= changeX
+                # herorect.left = platformrect.right
+
+            # движемся направо
+            if herorect.right > herorect_old.right:
+                herorect.x -= changeX
+                # herorect.left = platformrect.right
+
+        if herorect.colliderect(platformrect) == True:
+            # движемся вниз
+            if herorect.bottom > herorect_old.bottom:
+                herorect.bottom = platformrect.top
+                
+            if herorect.top < herorect_old.top:
+                herorect.top = platformrect.bottom
+
+
+    # заливаем главный фон черным цветом
+    mainScreen.fill(mainScreenColor)
     
     #рисовка плаформ 
     
