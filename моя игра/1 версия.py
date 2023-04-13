@@ -3,13 +3,13 @@ pygame.init()
 
 # цвета
 BLACK = (0, 0, 0)
-
+WHITE = (255, 255, 255)
 
 # настройки главного экрана
 WIDTH = 1920
 HEIGHT = 1080
-mainScreen = pygame.display.set_mode((WIDTH, HEIGHT))
-mainScreenColor = BLACK
+mainScreen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN)
+mainScreenColor = WHITE
 pygame.display.set_caption("Моя игра")
 
 # число кадров в секунду
@@ -47,19 +47,21 @@ maps =  [
     '*                                     *',
     '*                                     *',
     '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '*                                     *',
-    '***********************************   *',
-    '*                                     *',
-    '*                                     *',
+    '****** *                              *',
+    '*      *                              *',
+    '*    * ********                       *',
+    '*    *        *                       *',
+    '*    * ****** *                       *',
+    '****** *                              *',
+    '*      *                              *',
+    '** *** *                              *',
+    '*    * ********                       *',
+    '*    *        *                       *',
+    '*    * ****** *                       *',
+    '*    * *    * *   ******* *******     *',
+    '*    * *    * *****     * *     * * ***',
+    '****** *    *       *** *** *** *** * *',
+    '*      *    * ******* *     * *     * *',
     '***************************************',
 ]
 
@@ -81,13 +83,8 @@ while 1:
                 
             if event.key == pygame.K_DOWN :
                 changeY = SPEED
-        # if event.type == pygame.KEYUP:
-        #         if event.key in [pygame.K_LEFT, pygame.K_RIGHT]:
-        #             changeX = 0
-        #         elif event.key in [pygame.K_DOWN, pygame.K_UP]:
-        #             changeY = 0
-        
-
+            if pygame.K_ESCAPE:
+                sys.exit()
     herorect_old = herorect.copy()
 
 
