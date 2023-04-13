@@ -74,40 +74,25 @@ while 1:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
-        if keys[pygame.K_ESCAPE]:
-            sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                changeX += -1 * SPEED
+            if event.key == pygame.K_RIGHT:
+                changeX = SPEED
+                herorect.x += changeX
+            if event.key == pygame.K_UP:
+                changeY = -1 * SPEED
+                
+            if event.key == pygame.K_DOWN :
+                changeY = SPEED
+            if pygame.K_ESCAPE:
+                sys.exit()
     herorect_old = herorect.copy()
 
     platforms = []
 
-    #движение
-    
-
-    if keys[pygame.K_LEFT]:
-        changeX = -1 * SPEED
-        
-
-    if keys[pygame.K_RIGHT]:
-        changeX = SPEED
-        
-
-    if keys[pygame.K_UP]:
-        changeY = -1 * SPEED
-        
-
-    if keys[pygame.K_DOWN]:
-        changeY = SPEED
-        
-
-    if not keys[pygame.K_DOWN] and not keys[pygame.K_UP]:
-        changeY = 0
-
-    if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
-        changeX = 0
     
     #генерация платформ
-
-    platforms = []
 
     for i in range(len(maps)):
         for j in range(len(maps[i])):
@@ -118,10 +103,6 @@ while 1:
                 platforms.append(platformrect)
                 mainScreen.blit(platform, platformrect) 
                 
-
-    herorect.x += changeX
-    herorect.y += changeY
-
     #провера столкновения 
     for platformrect in platforms:
         if herorect.colliderect(platformrect) == True:
