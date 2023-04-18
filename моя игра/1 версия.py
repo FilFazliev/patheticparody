@@ -20,7 +20,9 @@ SPEED = 60
 changeX = 0
 changeY = 0
 
-
+move = False
+move1 = False
+collision = False
 #платформы 
 
 platform = pygame.image.load('block0.png') 
@@ -71,17 +73,24 @@ while 1:
         if event.type == pygame.QUIT:
             sys.exit()
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
+            if event.key == pygame.K_LEFT and move == False :
                 changeX += -1 * SPEED
-            if event.key == pygame.K_RIGHT:
+                move = True 
+            if event.key == pygame.K_RIGHT and move == False:
                 changeX = SPEED
-                herorect.x += changeX
-            if event.key == pygame.K_UP:
+                move = True
+            
+            if event.key == pygame.K_UP and move == False:
                 changeY = -1 * SPEED
-            if event.key == pygame.K_DOWN :
+                move = True
+                # if collision == True:
+                #     move == False
+            if event.key == pygame.K_DOWN and move == False:
                 changeY = SPEED
-            # elif pygame.K_ESCAPE:
-            #     sys.exit()
+                move = True
+            if event.key == pygame.K_ESCAPE:
+                sys.exit()
+    
     herorect_old = herorect.copy()
 
     platforms = []
@@ -103,23 +112,31 @@ while 1:
     #провера столкновения 
     for platformrect in platforms:
         if herorect.colliderect(platformrect) == True:
-            # движемся налево
+            # collision = True
+            move = False
+             # движемся налево
             if herorect.left < herorect_old.left:
                 herorect.x -= changeX
-                # herorect.left = platformrect.right
 
             # движемся направо
             if herorect.right > herorect_old.right:
                 herorect.x -= changeX
-                # herorect.left = platformrect.right
 
-        if herorect.colliderect(platformrect) == True:
+        # else:
+        #     collision = False
+ 
+
+        if herorect.colliderect(platformrect) == True :
+            # collision = True
+            move = False
             # движемся вниз
             if herorect.bottom > herorect_old.bottom:
                 herorect.bottom = platformrect.top
                 
             if herorect.top < herorect_old.top:
-                herorect.top = platformrect.bottom
+                herorect.top = platformrect.bottom + 10
+        # else:
+        #     collision = False
 
 
     # заливаем главный фон черным цветом
@@ -132,5 +149,6 @@ while 1:
 
     mainScreen.blit(hero,herorect)
 
+    # print(move)
     pygame.display.flip()
     clock.tick(FPS)
