@@ -24,7 +24,7 @@ move = False
 move1 = False
 collision = False
 #платформы 
-
+thorn = pygame.image.load('шипы.png') 
 border = pygame.image.load('block0.png') 
 platform = pygame.image.load('block0.png') 
 prostr = pygame.image.load('food.png')
@@ -40,30 +40,76 @@ hero = herostand
 herorect = hero.get_rect()
 herorect.bottom = HEIGHT-150
 herorect.left = WIDTH-1600
-
-maps =  [
-    '***************************************',
-    '*//*---------------------*     *---- ^ ',
-    '****- --      *  -      -*      -  -***',
-    '*-------*-  * ***-      -*****  -  -*/*',
-    '*-**    *-------*-------------------*/*',
-    '*----*--*-------*---------------*  -*/*',
-    '******-*     ******------*     **  -*/*',    
-    '*------*--------   -    **     *   -*/*',
-    '*- -*-*********---------------------*/*',
-    '*- -*---------*--********************/*',
-    '*---*- -*****-*--*------------------*/*',
-    '*****- -*---*-*--*-****************-*/*',
-    '*----- -*-***-*--*-*--------------*-*/*',
-    '*-****--*-----*--*-*-************-*-*/*',
-    '*---*--********--*-*------------*-*-*/*',
-    '*- -*---------*--*-**************-*-*/*',
-    '*- -*- -*****-*--*----------------*-*/*',
-    '*- -*- -*///*- --******************-*/*',
-    '*---*- -*///*-*****-----*/*-----*/*-*/*',
-    '*****- -*///*-------***-***-***-***-*/*',
-    '*-------*///*********/*-----*/*-----*/*',
-    '***************************************',
+level = 1
+maps =  [ 
+    [
+        '***************************************',
+        '*//*---------------------*     *----  ^',
+        '****- --      *  -      -*      -  -***',
+        '*-------*-  * ***-      -*****  -  -*/*',
+        '*-**    *-------*-------------------*/*',
+        '*----*--*-------*---------------*  -*/*',
+        '******-*     ******------*     **  -*/*',    
+        '*------*--------   -    **     *   -*/*',
+        '*- -*-*********---------------------*/*',
+        '*- -*---------*--********************/*',
+        '*---*- -*****-*--*------------------*/*',
+        '*****- -*---*-*--*-****************-*/*',
+        '*----- -*-***-*--*-*--------------*-*/*',
+        '*-****--*-----*--*-*-************-*-*/*',
+        '*---*--********--*-*------------*-*-*/*',
+        '*- -*---------*--*-**************-*-*/*',
+        '*- -*- -*****-*--*----------------*-*/*',
+        '*- -*- -*///*- --******************-*/*',
+        '*---*- -*///*-*****-----*/*-----*/*-*/*',
+        '*****- -*///*-------***-***-***-***-*/*',
+        '*-------*///*********/*-----*/*-----*/*',
+        '***************************************',
+    ],
+    [
+        '***************************************',
+        '  *-_*----   *                        *',
+        '*-* *****    *                        *',
+        '*-*-*     *  *                        *',
+        '*-  *      --*                        *',
+        '*-  * ****   *                        *',
+        '*-  *     *  *                        *',
+        '**        *  *                        *',
+        '*_   ---- *  *                        *',
+        '********* *  *                        *',
+        '* -----   *  *                        *',
+        '*           -*                        *',
+        '*-     ****  *                        *',
+        '*-           *                        *',
+        '*-    *      *         ******         *',
+        '***** *      *                        *',
+        '*-----   -*  *                   **** *',
+        '* ****   -  ---                       *',
+        '*        - *_*                        ^',
+        '***************************************',
+    ],
+    [
+        '***************************************',
+        '*                                     *',
+        '*                                     *',
+        '*                                     *',
+        '*                                     *',
+        '*                                     *',
+        '*                                     *',
+        '*                                     *',
+        '*                                     *',
+        '*                     *******         *',
+        '*                                     *',
+        '*                                     *',
+        '*      ******                         *',
+        '*                                     *',
+        '*                      ******         *',
+        '*****                                 *',
+        '*                                **** *',
+        '*                                     *',
+        '*                                     *',
+        '***************************************',
+    ]
 ]
 
 
@@ -105,38 +151,47 @@ while 1:
     prostranstvo = []
     havattt = []
     borders = []
+    thorns = []
 
     herorect.x += changeX
     herorect.y += changeY
 
     #генерация платформ
 
-    for i in range(len(maps)):
-        for j in range(len(maps[i])):
-            if maps[i][j] == '*':
+    currentmap = maps[level]
+
+    for i in range(len(currentmap)):
+        for j in range(len(currentmap[i])):
+            if currentmap[i][j] == '*':
                 platformrect = platform.get_rect()
                 platformrect.x = 50 * j
                 platformrect.y = 50 * i
                 platforms.append(platformrect)
                 mainScreen.blit(platform, platformrect)
-            if maps[i][j] == '/':
+            if currentmap[i][j] == '/':
                prostrRect = prostr.get_rect()
                prostrRect.x = 50 * j
                prostrRect.y = 50 * i
                prostranstvo.append(prostrRect)
                mainScreen.blit(prostr, prostrRect)
-            if maps[i][j] == '-':
+            if currentmap[i][j] == '-':
                havatRect = havat.get_rect()
                havatRect.x = 50 * j
                havatRect.y = 50 * i
                havattt.append(havatRect)
                mainScreen.blit(havat, havatRect)
-            if maps[i][j] == '^':
+            if currentmap[i][j] == '^':
                 borderRect = border.get_rect()
                 borderRect.x = 50 * j
                 borderRect.y = 50 * i
                 borders.append(borderRect)
                 mainScreen.blit(border, borderRect)
+            if currentmap[i][j] == '_':
+                thornRect = thorn.get_rect()
+                thornRect.x = 50 * j
+                thornRect.y = 50 * i
+                thorns.append(thornRect)
+                mainScreen.blit(thorn, thornRect)
 
     score = len(havattt)
 
@@ -171,18 +226,26 @@ while 1:
         if herorect.colliderect(havatRect) == True:
             mapx = havatRect.x // 50
             mapy = havatRect.y // 50
-            havatstr = maps[mapy]
+            havatstr = currentmap[mapy]
             havatstr = havatstr[:mapx] + ' ' + havatstr[mapx + 1:]
-            maps[mapy] = havatstr
+            currentmap[mapy] = havatstr
             score -=1
 
-    for borderRect in borders:
-        if score == 0:
-            mapx = borderRect.x // 50
-            mapy = borderRect.y // 50
-            borderstr = maps[mapy]
-            borderstr = borderstr[:mapx] + ' ' + borderstr[mapx + 1:]
-            maps[mapy] = borderstr
+    if herorect.colliderect(borderRect) == True and score!=0:
+        herorect.bottom = HEIGHT-150
+        herorect.left = WIDTH-1600
+
+
+    if score == 0 and herorect.colliderect(borderRect) == True:
+        level +=1
+        herorect.bottom = HEIGHT - 1000
+        herorect.left = WIDTH-1900
+        
+    if herorect.colliderect(thornRect) == True and level == 1:
+        herorect.bottom = HEIGHT - 1000
+        herorect.left = WIDTH-1900
+
+
 
 
     # заливаем главный фон черным цветом
@@ -196,11 +259,15 @@ while 1:
         mainScreen.blit(prostr, prostrRect)
     for havatRect in havattt:
         mainScreen.blit(havat, havatRect )
+    for borderRect in borders:
+        mainScreen.blit(border,borderRect)
+    for thornRect in thorns:
+        mainScreen.blit(thorn,thornRect)
 
     mainScreen.blit(hero,herorect)
 
     
 
-    # print(score)
+    # print(herorect.colliderect(borderRect))
     pygame.display.flip()
     clock.tick(FPS)
