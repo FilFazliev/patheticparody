@@ -9,7 +9,11 @@ WHITE = (255, 255, 255)
 WIDTH = 1920
 HEIGHT = 1080
 mainScreen = pygame.display.set_mode((WIDTH, HEIGHT),pygame.FULLSCREEN)
+<<<<<<< HEAD
 mainScreenColor = WHITE
+=======
+mainScreenColor = BLACK
+>>>>>>> f4062a77daaec4c702fdc61c3f20cbb488a4ccc0
 pygame.display.set_caption("Моя игра")
 
 # число кадров в секунду
@@ -26,6 +30,10 @@ move = False
 move1 = False
 collision = False
 
+<<<<<<< HEAD
+=======
+time = 0
+>>>>>>> f4062a77daaec4c702fdc61c3f20cbb488a4ccc0
 
 #платформы 
 
@@ -35,11 +43,22 @@ platform = pygame.image.load('block0.png')
 prostr = pygame.image.load('food.png')
 havat = pygame.image.load('havka.png')
 bullet = pygame.image.load('ПУЛЯЯЯ.png')
+<<<<<<< HEAD
 
 gun = pygame. Surface((20,20))
 gun.fill(BLACK)
 
 bulletrect = bullet.get_rect()
+=======
+# bulletDown = bullet.copy()
+# bulletDowm = pygame.transform.flip(bullet, False, True)
+
+
+gun = pygame.image.load('паук.jpg')
+
+bulletrect = bullet.get_rect()
+bullets = []
+>>>>>>> f4062a77daaec4c702fdc61c3f20cbb488a4ccc0
 
 
 #персонаж
@@ -96,12 +115,17 @@ maps =  [
         '*-    *      *         ******         *',
         '***** *      *                        *',
         '*-----   -*  *                   **** *',
+<<<<<<< HEAD
         '* ****   -  ---                       *',
+=======
+        '= ****   -  ---                       *',
+>>>>>>> f4062a77daaec4c702fdc61c3f20cbb488a4ccc0
         '*        - *_*                        ^',
         '***************************************',
     ],
     [
         '***************************************',
+<<<<<<< HEAD
         '*             *        *   *    _     *',
         '* ***    **** *        * * *    * *** *',
         '* */*         * ****** * * *      */* *',
@@ -122,6 +146,26 @@ maps =  [
         '*///////=  *                  *       *',
         '****************=***=***=**************',
         '*_____________________________________*',
+=======
+        '*                                     *',
+        '*                                     *',
+        '*                                     *',
+        '*                                     *',
+        '*                                     *',
+        '*                                     *',
+        '*                                     *',
+        '*                                     *',
+        '*                     *******         *',
+        '*                                     =',
+        '*                                     *',
+        '*      ******                         *',
+        '*                                     *',
+        '*                      ******         *',
+        '*****                                 *',
+        '*                                **** *',
+        '*                                     *',
+        '*                                     *',
+>>>>>>> f4062a77daaec4c702fdc61c3f20cbb488a4ccc0
         '***************************************',
     ]
 ]
@@ -136,6 +180,7 @@ while 1:
         if event.type == pygame.QUIT:
             sys.exit()
         if event.type == pygame.KEYDOWN:
+<<<<<<< HEAD
         #     if event.key == pygame.K_LEFT and move == False :
         #         changeX = -1 * SPEED
         #         move = True 
@@ -178,6 +223,29 @@ while 1:
     if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
         changeX1 = 0
 
+=======
+            if event.key == pygame.K_LEFT and move == False :
+                changeX = -1 * SPEED
+                move = True 
+            if event.key == pygame.K_RIGHT and move == False:
+                changeX = SPEED
+                move = True
+                hero = heromover
+            
+            if event.key == pygame.K_UP and move == False:
+                changeY = -1 * SPEED
+                move = True
+            if event.key == pygame.K_DOWN and move == False:
+                changeY = SPEED
+                move = True
+            
+            if event.key == pygame.K_ESCAPE:
+                sys.exit()
+        elif event.type == pygame.KEYUP:
+            if event.key in [pygame.K_LEFT, pygame.K_RIGHT, pygame.K_DOWN,pygame.K_UP ]:
+                move == False
+                
+>>>>>>> f4062a77daaec4c702fdc61c3f20cbb488a4ccc0
     herorect_old = herorect.copy()
 
     platforms = []
@@ -186,13 +254,19 @@ while 1:
     borders = []
     thorns = []
     guns = []
+<<<<<<< HEAD
     bullets =[]
+=======
+>>>>>>> f4062a77daaec4c702fdc61c3f20cbb488a4ccc0
 
     herorect.x += changeX
     herorect.y += changeY
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> f4062a77daaec4c702fdc61c3f20cbb488a4ccc0
     #генерация платформ
 
     currentmap = maps[level]
@@ -235,6 +309,7 @@ while 1:
                 gunRect.y = 50 * i
                 guns.append(gunRect)
                 mainScreen.blit(gun, gunRect)
+<<<<<<< HEAD
     
     #  генерация пуль
 
@@ -269,6 +344,51 @@ while 1:
     # if len(bullets) != 0:
     #         bulletrectMove= bullet.get_rect()
     #         bulletrectMove.x += 10 
+=======
+
+    # генерация пуль
+    if time == 30:
+        for gunrect in guns:
+            # print(gunrect, gunrect.centerx, gunrect.centery)
+            newbulletrect = bulletrect.copy()
+            newbulletrect.centerx = gunrect.centerx
+            newbulletrect.centery = gunrect.centery
+
+            speedx = 0
+            speedy = 0
+
+            time = 0
+
+            if gunrect.x == 0 and gunrect.y != 0:
+                speedx = 5
+                speedy = 0
+            elif gunrect.y == 0: 
+                speedy = 5
+                speedx = 0
+
+            # if gunrect.y == 0:
+            #     speedy = 5
+            # else:
+            #     speedy = -5
+
+            newbulletobj = {
+                'rect': newbulletrect,
+                'speedx': speedx,
+                'speedy': speedy
+            }
+
+            bullets.append(newbulletobj)
+    
+    
+    # попадание
+
+
+
+    if herorect.colliderect(bulletrect) == True:  
+        herorect.bottom = HEIGHT - 1000
+        herorect.left = WIDTH-1900
+        break
+>>>>>>> f4062a77daaec4c702fdc61c3f20cbb488a4ccc0
 
 
     score = len(havattt)
@@ -323,6 +443,7 @@ while 1:
         if herorect.colliderect(thornRect) == True and level == 1:
             herorect.bottom = HEIGHT - 1000
             herorect.left = WIDTH-1900
+<<<<<<< HEAD
 
     if len(bullets) > 0:
         for i in range(len(bullets)):
@@ -331,10 +452,20 @@ while 1:
                 herorect.bottom = HEIGHT - 1000
                 herorect.left = WIDTH-1900
                 break
+=======
+>>>>>>> f4062a77daaec4c702fdc61c3f20cbb488a4ccc0
 
 
     # заливаем главный фон черным цветом
     mainScreen.fill(mainScreenColor)
+
+    # движение пуль 
+
+    # print(bullets)
+    for bulletrectobj in bullets:
+        bulletrectobj['rect'].x += bulletrectobj['speedx']
+        bulletrectobj['rect'].y += bulletrectobj['speedy']
+        mainScreen.blit(bullet, bulletrectobj['rect'])
     
     #рисовка плаформ 
     
@@ -348,11 +479,30 @@ while 1:
         mainScreen.blit(border,borderRect)
     for thornRect in thorns:
         mainScreen.blit(thorn,thornRect)
+<<<<<<< HEAD
 
+=======
+    for gunRect in guns:
+        mainScreen.blit(gun,gunRect)
+    
+>>>>>>> f4062a77daaec4c702fdc61c3f20cbb488a4ccc0
     mainScreen.blit(hero,herorect)
+    
+    time += 1
 
+
+<<<<<<< HEAD
     
 
     # print(herorect.colliderect(borderRect))
     pygame.display.flip()
     clock.tick(FPS)
+=======
+    pygame.display.flip()
+    clock.tick(FPS)
+
+
+
+    # исчезание пуль после столкновения с чем либо
+    #  
+>>>>>>> f4062a77daaec4c702fdc61c3f20cbb488a4ccc0
